@@ -49,7 +49,7 @@ The training data should be placed in the `dir_train_wav` directroy, containing 
 For detaild information reagrding the parameters to be specified during training, please refer to the [Arguments.md](./Arguments.md).
 
 ## Pre-trained model
-We offer a pre-trained model that can be downloaded from [here](https://sonyjpn-my.sharepoint.com/:f:/g/personal/naoki_murata_sony_com/Ej83Z7vHqzpAoEo9I9Uk56gBlDjjx9C_SJ12_JJhEi89gA?e=wFnoiV). 
+We offer a pre-trained model that can be downloaded from [here](https://zenodo.org/record/7988790). 
 
 # Run Diffiner/Diffiner+ (Inference)
 After training and preceding SE, you can run Diffiner/Diffiner+ as follows:
