@@ -1,0 +1,46 @@
+FROM pytorch/pytorch:1.11.0-cuda11.3-cudnn8-devel
+
+# Update GPG key of NVIDIA Docker Images 
+# (See https://developer.nvidia.com/blog/updating-the-cuda-linux-gpg-repository-key/ for more detail)
+RUN rm -f /etc/apt/sources.list.d/cuda.list \
+ && apt-get update && apt-get install -y --no-install-recommends \
+    wget \
+ && wget https://developer.download.nvidia.com/compute/cuda/repos/ubuntu1804/x86_64/cuda-keyring_1.0-1_all.deb \
+ && dpkg -i cuda-keyring_1.0-1_all.deb \
+ && rm -f cuda-keyring_1.0-1_all.deb
+
+# Install basic utilities
+RUN apt-get clean && \
+    apt-get -y update && \
+    apt-get install -y --no-install-recommends \
+    # add basic apt packages
+	&& apt-get -y install nano wget curl git zip unzip \
+	&& apt-get -y install ca-certificates sudo bzip2 libx11-6 emacs htop docker.io sox \
+    && apt-get clean \ 
+    && rm -rf /var/lib/apt/lists/*
+
+# Install python packages
+RUN pip install --upgrade pip
+
+RUN pip install matplotlib seaborn
+RUN pip install ipywidgets jupyter ipykernel
+
+# In order to install mpi4py, we have to 
+RUN apt-get -y update
+RUN apt-get -y install libopenmpi-dev
+
+RUN pip install mpi4py
+
+RUN pip install 'blobfile>=1.0.5' tqdm
+
+# Install torch audio
+RUN pip3 install torchaudio --extra-index-url https://download.pytorch.org/whl/cu113
+
+# Install soundfile
+RUN apt-get -y update
+RUN apt-get -y install libsndfile1
+RUN pip install soundfile librosa pypesq wavio
+
+# set filesystem encoding to utf-8
+# so that soundfile module can read filename with not ascii code.
+ENV LC_CTYPE "C.UTF-8"
